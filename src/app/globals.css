@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
+/* 1. Brand Color Variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-blue: #104787;
+  --neutral-white: #feffff;
+  --neutral-gray: #364153;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 2. Universal Box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 3. Base & Reset */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-style: normal;
+  background-color: var(--neutral-white);
+  color: var(--neutral-gray);
+  line-height: 1.5;
+
+  /* Firefox Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-blue) transparent;
 }
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-abhaya), sans-serif;
+}
+
+/* WebKit Scrollbar (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  filter: brightness(0.9);
+}
+/* HOLOGRAPHIC EFFECT (for buttons + cards) */
+.holo {
+  position: relative;
+  overflow: hidden;
+}
+
+.holo::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent 30%,
+    rgb(16, 71, 135, 1)
+  );
+  transform: rotate(-45deg);
+  opacity: 0;
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
+.holo:hover::before {
+  opacity: 1;
+  transform: rotate(-45deg) translateY(100%);
+}
+
+.holo:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 20px rgba(16, 71, 135, 1);
+
+}
+
+.holo {
+  transition: all 0.4s ease;
+}
+
