@@ -1,6 +1,12 @@
+import { motion } from "framer-motion";
+
 export default function PortfolioCard({ item }) {
   return (
-    <article className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm hover:shadow-lg transition-all duration-200 holo">
+    <motion.article
+      initial={{ opacity: 0, y: 30, scale: 0.85 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.3 }} 
+      transition={{ duration: 0.6, ease: "easeOut" }} className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm hover:shadow-lg transition-all duration-200 holo">
       {/* Top Section */}
       <div className="flex items-start justify-between gap-4 ">
         <div className="flex-1 min-w-0">
@@ -38,6 +44,6 @@ export default function PortfolioCard({ item }) {
           <div className="text-slate-400">Growth</div>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

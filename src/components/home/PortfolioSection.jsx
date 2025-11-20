@@ -68,7 +68,7 @@ export default function PortfolioSection() {
   ];
 
   return (
-    <section className="py-16 px-6 md:px-12 bg-linear-to-br from-white to-slate-50">
+    <section className="py-16 px-6 md:px-12 bg-linear-to-br from-white to-slate-50" id="portfolio">
       <div className="max-w-7xl mx-auto text-center">
         <p className="inline-block bg-[rgba(29,96,229,0.1)] text-[#104787] px-4 py-1 rounded-full text-2xl font-semibold shadow-sm">
           Our Portfolio

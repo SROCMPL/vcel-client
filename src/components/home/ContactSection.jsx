@@ -1,5 +1,5 @@
 "use client";
-
+import {motion} from "framer-motion";
 export default function ContactSection() {
   // Background image path (you provided this file)
  
@@ -8,13 +8,18 @@ export default function ContactSection() {
     <section
       aria-label="Contact us"
       className="w-full py-20  bg-[linear-gradient(90deg,rgba(255,255,255,0.75),rgba(16,71,135,1))]"
-      
+    id="contact"  
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-30 items-start">
 
           {/* Left: Heading + contact details */}
-          <div className="lg:col-span-5">
+          <motion.div
+           initial={{ opacity: 0, y: 30, scale: 0.85 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.3 }} 
+      transition={{ duration: 0.6, ease: "easeOut" }}
+           className="lg:col-span-5">
             <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-3 text-center lg:text-left">Let's Build Something Great Together</h2>
             <p className="text-gray-700 mb-8 text-center lg:text-left">Have a groundbreaking idea? We'd love to hear from you.</p>
 
@@ -56,10 +61,15 @@ export default function ContactSection() {
                 <button className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#104787] text-white text-sm shadow">Submit Pitch Deck</button>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right: Form card */}
-          <div className="lg:col-span-7">
+          <motion.div className="lg:col-span-7" 
+           initial={{ opacity: 0, y: 30, scale: 0.85 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.3 }} 
+      transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <div className="bg-white/90 backdrop-blur rounded-xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto lg:mx-0">
               <form onSubmit={(e) => { e.preventDefault(); alert('Form submitted (dummy)'); }} className="space-y-4">
                 <div>
@@ -90,7 +100,7 @@ export default function ContactSection() {
                 </div>
               </form>
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>

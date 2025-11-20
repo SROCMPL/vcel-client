@@ -1,7 +1,10 @@
+
+
 // // components/ThirdSectionStats.jsx
 // "use client";
 // import { useEffect, useRef, useState } from "react";
-
+// import { motion } from "framer-motion";
+// /* ---------------- utilities ---------------- */
 // function easeOutCubic(t) {
 //   return 1 - Math.pow(1 - t, 3);
 // }
@@ -49,6 +52,34 @@
 //   return value;
 // }
 
+// /* ---------------- default gradients & icons ----------------
+//    - This array determines the gradient + icon for each card by index.
+//    - Add / reorder entries if you have more cards.
+// */
+// const STYLE_MAP = [
+//   {
+//     gradient: "bg-gradient-to-br from-cyan-400 to-blue-500",
+//     // simple SVG icon (wallet/chart)
+//     icon: "/Vector.png",
+//   },
+//   {
+//     gradient: "bg-gradient-to-br from-pink-400 to-pink-600",
+//     // network / nodes icon
+//     icon: "/pc.png",
+//   },
+//   {
+//     gradient: "bg-gradient-to-br from-green-400 to-green-600",
+//     // trophy / success icon
+//     icon: "/success.png",
+//   },
+//   {
+//     gradient: "bg-gradient-to-br from-orange-400 to-amber-500",
+//     // rocket / growth icon
+//     icon: "/unicorn-1.png",
+//   },
+// ];
+
+// /* ---------------- main component ---------------- */
 // export default function ThirdSectionStats({ apiEndpoint = null }) {
 //   const [stats, setStats] = useState([
 //     { id: 1, value: "500M", label: "Assets Under Management" },
@@ -60,7 +91,6 @@
 //   const sectionRef = useRef(null);
 //   const [startCount, setStartCount] = useState(false);
 
-//   // 👇 Start counter when section enters viewport
 //   useEffect(() => {
 //     const observer = new IntersectionObserver(
 //       (entries) => {
@@ -71,50 +101,65 @@
 //       },
 //       { threshold: 0.3 }
 //     );
-
 //     if (sectionRef.current) observer.observe(sectionRef.current);
-
 //     return () => observer.disconnect();
 //   }, []);
 
-//   // fetch backend data if endpoint provided
+//   // Optional: fetch backend data (expects { stats: [{ id, value, label }, ...] })
 //   useEffect(() => {
 //     if (!apiEndpoint) return;
-
+//     let mounted = true;
 //     async function fetchData() {
 //       try {
 //         const res = await fetch(apiEndpoint);
+//         if (!res.ok) throw new Error("fetch failed");
 //         const json = await res.json();
-//         if (Array.isArray(json.stats)) setStats(json.stats);
+//         if (mounted && Array.isArray(json.stats)) setStats(json.stats);
 //       } catch (err) {
 //         console.error("API error:", err);
 //       }
 //     }
 //     fetchData();
+//     return () => (mounted = false);
 //   }, [apiEndpoint]);
 
 //   return (
-//     <section
-//       ref={sectionRef}
-//       className="w-full  bg-red-500 py-12 md:py-20"
-//     >
+//     <section ref={sectionRef} className="w-full py-12 md:py-18">
 //       <div className="bg-[linear-gradient(180deg,rgba(180,180,180,1)_0%,rgba(16,71,135,0.71)_50%,rgba(16,71,135,1)_100%)]">
-//         <div className="max-w-7xl mx-auto px-6">
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-center py-10">
-//             {stats.map((s) => (
-//               <StatCard key={s.id} stat={s} animate={startCount} />
+//         <motion.div 
+//         initial="hidden"
+//           whileInView="show"
+//           viewport={{ once: true, amount: 0.3 }}
+//           variants={{
+//             hidden: {},
+//             show: {
+//               transition: { staggerChildren: 0.18 },
+//             },
+//           }}
+//         className="max-w-7xl mx-auto px-6">
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center py-10">
+//             {stats.map((s, index) => (
+//               <StatCard
+//                 key={s.id}
+//                 stat={s}
+//                 index={index}
+//                 animate={startCount}
+//               />
 //             ))}
 //           </div>
-//         </div>
+//         </motion.div>
 //       </div>
 //     </section>
 //   );
 // }
 
-// function StatCard({ stat, animate }) {
+// /* ---------------- StatCard ----------------
+//    - picks gradient & icon from STYLE_MAP by index (wraps around if more cards)
+//    - keeps backend responsibility only for `value` and `label`
+// */
+// function StatCard({ stat, index = 0, animate = false }) {
 //   const raw = String(stat.value ?? "");
 //   const { num, unit } = parseFormattedValue(raw);
-
 //   const animated = useAnimatedNumber(
 //     Number.isFinite(num) ? num : 0,
 //     1400,
@@ -131,32 +176,35 @@
 //     ? `${formatAnimated(animated)}${unit}+`
 //     : `${raw}+`;
 
+//   const style = STYLE_MAP[index % STYLE_MAP.length];
+
 //   return (
 //     <div className="flex flex-col items-center">
-//       <div className="p-4 rounded-xl shadow-xl mb-4 bg-red-400">
-//         <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-//           <rect width="24" height="24" rx="6" fill="white" opacity="0.05" />
-//           <path
-//             d="M7 12l3 3 7-7"
-//             stroke="white"
-//             strokeWidth="1.6"
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//           />
-//         </svg>
+//       <div
+//         className={`p-4 rounded-xl shadow-xl mb-4 ${style.gradient} flex items-center justify-center`}
+//         aria-hidden
+//       >
+//         {/* colored icon placed on top of gradient */}
+//         <div className="w-12 h-12 flex items-center justify-center">
+//           <img src={style.icon} alt="" />
+//         </div>
 //       </div>
 
 //       <div className="text-white font-semibold text-3xl md:text-4xl leading-none">
 //         {shown}
 //       </div>
-
-//       <div className="text-white/80 mt-2 text-sm md:text-base">{stat.label}</div>
+//       <div className="text-white/80 mt-2 text-sm md:text-base">
+//         {stat.label}
+//       </div>
 //     </div>
 //   );
 // }
+
+
 // components/ThirdSectionStats.jsx
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 /* ---------------- utilities ---------------- */
 function easeOutCubic(t) {
@@ -206,32 +254,36 @@ function useAnimatedNumber(target, duration = 1400, start = false) {
   return value;
 }
 
-/* ---------------- default gradients & icons ----------------
-   - This array determines the gradient + icon for each card by index.
-   - Add / reorder entries if you have more cards.
-*/
+/* ---------------- default gradients & icons ---------------- */
 const STYLE_MAP = [
   {
     gradient: "bg-gradient-to-br from-cyan-400 to-blue-500",
-    // simple SVG icon (wallet/chart)
     icon: "/Vector.png",
   },
   {
     gradient: "bg-gradient-to-br from-pink-400 to-pink-600",
-    // network / nodes icon
     icon: "/pc.png",
   },
   {
     gradient: "bg-gradient-to-br from-green-400 to-green-600",
-    // trophy / success icon
     icon: "/success.png",
   },
   {
     gradient: "bg-gradient-to-br from-orange-400 to-amber-500",
-    // rocket / growth icon
     icon: "/unicorn-1.png",
   },
 ];
+
+/* ---------------- card animation variant ---------------- */
+const cardVariant = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
 
 /* ---------------- main component ---------------- */
 export default function ThirdSectionStats({ apiEndpoint = null }) {
@@ -245,21 +297,26 @@ export default function ThirdSectionStats({ apiEndpoint = null }) {
   const sectionRef = useRef(null);
   const [startCount, setStartCount] = useState(false);
 
+  /* ----------- Repeatable Observer (fixed) ---------- */
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setStartCount(true);
-          observer.disconnect();
+        const entry = entries[0];
+
+        if (entry.isIntersecting) {
+          setStartCount(true); // start animation
+        } else {
+          setStartCount(false); // reset when section leaves viewport
         }
       },
       { threshold: 0.3 }
     );
+
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
-  // Optional: fetch backend data (expects { stats: [{ id, value, label }, ...] })
+  /* ----------- API Fetch (no change) ---------- */
   useEffect(() => {
     if (!apiEndpoint) return;
     let mounted = true;
@@ -280,7 +337,17 @@ export default function ThirdSectionStats({ apiEndpoint = null }) {
   return (
     <section ref={sectionRef} className="w-full py-12 md:py-18">
       <div className="bg-[linear-gradient(180deg,rgba(180,180,180,1)_0%,rgba(16,71,135,0.71)_50%,rgba(16,71,135,1)_100%)]">
-        <div className="max-w-7xl mx-auto px-6">
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.3 }} // animation repeats
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.18 } },
+          }}
+          className="max-w-7xl mx-auto px-6"
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center py-10">
             {stats.map((s, index) => (
               <StatCard
@@ -291,16 +358,14 @@ export default function ThirdSectionStats({ apiEndpoint = null }) {
               />
             ))}
           </div>
-        </div>
+        </motion.div>
+
       </div>
     </section>
   );
 }
 
-/* ---------------- StatCard ----------------
-   - picks gradient & icon from STYLE_MAP by index (wraps around if more cards)
-   - keeps backend responsibility only for `value` and `label`
-*/
+/* ---------------- StatCard ---------------- */
 function StatCard({ stat, index = 0, animate = false }) {
   const raw = String(stat.value ?? "");
   const { num, unit } = parseFormattedValue(raw);
@@ -323,12 +388,10 @@ function StatCard({ stat, index = 0, animate = false }) {
   const style = STYLE_MAP[index % STYLE_MAP.length];
 
   return (
-    <div className="flex flex-col items-center">
+    <motion.div variants={cardVariant} className="flex flex-col items-center">
       <div
         className={`p-4 rounded-xl shadow-xl mb-4 ${style.gradient} flex items-center justify-center`}
-        aria-hidden
       >
-        {/* colored icon placed on top of gradient */}
         <div className="w-12 h-12 flex items-center justify-center">
           <img src={style.icon} alt="" />
         </div>
@@ -337,9 +400,10 @@ function StatCard({ stat, index = 0, animate = false }) {
       <div className="text-white font-semibold text-3xl md:text-4xl leading-none">
         {shown}
       </div>
+
       <div className="text-white/80 mt-2 text-sm md:text-base">
         {stat.label}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -5,11 +5,13 @@ const abhaya = Abhaya_Libre({
   variable: "--font-abhaya",
   weight: "800",   
   subsets: ["latin"],
+    preload: false,
 });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
+    preload: false,
 });
 
 export const metadata = {

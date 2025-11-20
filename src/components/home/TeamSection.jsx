@@ -1,9 +1,9 @@
 // TeamSectionComponent.jsx
 // Tailwind + React component (single-file).
 // Uses a local image URL: /mnt/data/Team.png (replace with your real portrait URLs from backend)
-
+"use client";
 import React from "react";
-
+import { motion } from "framer-motion";
 export default function TeamSection() {
   // Dummy data (replace with backend fetch). Each member should have an `image` URL.
   const team = [
@@ -42,7 +42,7 @@ export default function TeamSection() {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20">
+    <section className="max-w-7xl mx-auto px-6 py-20" id="team">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-semibold">Meet Our Team</h2>
         <p className="mt-3 text-gray-500 max-w-2xl mx-auto">
@@ -53,7 +53,11 @@ export default function TeamSection() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {team.map((member) => (
-          <article
+          <motion.article
+            initial={{ opacity: 0, y: 30, scale: 0.85 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             key={member.id}
             className="bg-white rounded-xl shadow-xl p-6 flex flex-col items-center text-center holo"
           >
@@ -148,7 +152,7 @@ export default function TeamSection() {
                 </svg>
               </a>
             </div>
-          </article>
+          </motion.article>
         ))}
       </div>
 

@@ -1,5 +1,7 @@
 // components/Footer.jsx
+"use client";
 import React from "react";
+import {motion} from "framer-motion"
 
 const footerLinks = {
   "Quick Links": [
@@ -24,7 +26,11 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer
+    <motion.footer
+    initial={{ opacity: 0, y: 30, scale: 0.85 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.3 }} 
+      transition={{ duration: 0.6, ease: "easeOut" }}
       aria-labelledby="footer-heading"
       className="pt-16 pb-24 bg-[linear-gradient(135deg,#000000_0%,#0C3360_50%,#104787_83.14%)]"
     >
@@ -163,6 +169,6 @@ export default function Footer() {
           © {new Date().getFullYear()} VCEL. All rights reserved.
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

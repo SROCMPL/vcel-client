@@ -17,7 +17,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
-      <div className="max-w-full md:px-14 lg:px-25 px-3 h-25 flex items-center justify-between relative">
+      <div className="max-w-full md:px-14 lg:px-25 px-3 sm:h-25 h:15 flex items-center justify-between relative">
         {/* Logo (left) */}
         <div className="flex items-center gap-2">
           <Image
@@ -40,8 +40,8 @@ export default function Navbar() {
                   smooth={true}
                   offset={-64}
                   duration={400}
-                  activeClass="text-green-600 font-semibold text-[1.3rem]"
-                  className="cursor-pointer text-[#364153] hover:text-gray-900 transition-colors"
+                  activeClass="text-[#104787] font-semibold text-[1.2rem]"
+                  className="cursor-pointer text-[#364153] hover:text-[#104787] transition-colors"
                 >
                   {item.label}
                 </ScrollLink>
@@ -51,18 +51,21 @@ export default function Navbar() {
         </nav>
 
         {/* Contact button (right) */}
-        <div className="hidden md:flex items-center">
-          <ScrollLink
-            to="contact"
-            spy={true}
-            smooth={true}
-            offset={-64}
-            duration={400}
-            className="inline-block px-4 py-2 text-sm rounded-md bg-[#104787] text-white shadow-sm cursor-pointer"
-            activeClass="ring-2 ring-green-500"
-          >
-            Contact Us
-          </ScrollLink>
+        <div className="hidden md:flex items-center ">
+          <div className="hover-underline">
+            {" "}
+            <ScrollLink
+              to="contact "
+              spy={true}
+              smooth={true}
+              offset={-64}
+              duration={400}
+              className="inline-block px-4 py-2 text-sm rounded-md bg-[#104787] text-white shadow-sm cursor-pointer hover:bg-[#202427] transition-colors"
+              activeClass="ring-2 ring-gray-500 "
+            >
+              Contact Us
+            </ScrollLink>
+          </div>
         </div>
 
         {/* Mobile toggle (right) */}
@@ -85,7 +88,9 @@ export default function Navbar() {
       {/* Mobile menu with animation */}
       <div
         className={`md:hidden origin-top overflow-hidden transition-all duration-300 ${
-          open ? "max-h-[400px] opacity-100 scale-y-100" : "max-h-0 opacity-0 scale-y-0"
+          open
+            ? "max-h-[400px] opacity-100 scale-y-100"
+            : "max-h-0 opacity-0 scale-y-0"
         }`}
       >
         <div className="bg-white border-t border-gray-100 shadow-sm px-4 py-4">
@@ -99,8 +104,8 @@ export default function Navbar() {
                   offset={-80}
                   duration={400}
                   onClick={() => setOpen(false)}
-                  activeClass="text-green-600 font-semibold"
-                  className="block py-2 text-gray-700 cursor-pointer transition-colors"
+                  activeClass="text-[#104787] font-semibold text-[1rem]"
+                  className=" block py-2 cursor-pointer text-[#364153] hover:text-[#104787] transition-colors"
                 >
                   {item.label}
                 </ScrollLink>
@@ -115,7 +120,7 @@ export default function Navbar() {
                 duration={400}
                 onClick={() => setOpen(false)}
                 className="mt-2 inline-block w-max px-4 py-2 text-sm rounded-md bg-[#104787] text-white shadow-sm cursor-pointer"
-                activeClass="ring-2 ring-green-500"
+                activeClass="ring-2 ring-gray-500"
               >
                 Contact Us
               </ScrollLink>
